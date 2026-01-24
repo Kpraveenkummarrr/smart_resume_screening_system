@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Resume</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="card upload-card">
+  <h2>📄 Resume Screening</h2>
+  <p class="subtitle">Upload resume & job description</p>
+
+  <form method="post" enctype="multipart/form-data">
+    
+    <label>Job Description</label>
+    <textarea name="job" placeholder="Enter required skills, experience, keywords..." required></textarea>
+
+    <label>Upload Resume (PDF / DOCX)</label>
+    <input type="file" name="resume" required>
+
+    <button type="submit">🔍 Analyze Resume</button>
+  </form>
+</div>
+
+</body>
+</html>

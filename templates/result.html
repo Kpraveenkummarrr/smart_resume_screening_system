@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  background: #f5f6fa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.progress-container {
+  width: 100%;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress-bar {
+  height: 12px;
+  background: linear-gradient(to right,#667eea,#764ba2);
+}
+
+.status {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.success {
+  background: #e6fffa;
+  color: #065f46;
+}
+
+.reject {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+  </style>
+<head>
+
+  <title>Screening Result</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="card">
+
+  <h2>📊 Resume Screening Result</h2>
+  <p class="subtitle">AI-based analysis summary</p>
+
+  <!-- RESULT INFO -->
+  <div class="info-row">
+    <span>Predicted Role</span>
+    <strong>{{ role }}</strong>
+  </div>
+
+  <div class="info-row">
+    <span>Match Score</span>
+    <strong>{{ score }}%</strong>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-container">
+    <div class="progress-bar" style="width: {{ score }}%"></div>
+  </div>
+
+  <!-- STATUS -->
+  {% if score|int >= 70 %}
+    <div class="status success">✅ Shortlisted</div>
+  {% else %}
+    <div class="status reject">❌ Not Shortlisted</div>
+  {% endif %}
+
+  <!-- CHART -->
+  <canvas id="scoreChart" style="margin-top:20px;"></canvas>
+
+  <a href="/upload">
+    <button style="margin-top:20px;">🔄 Analyze Another Resume</button>
+  </a>
+
+</div>
+
+<script>
+const score = {{ score }};
+const ctx = document.getElementById('scoreChart');
+
+new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Matched', 'Unmatched'],
+    datasets: [{
+      data: [score, 100 - score],
+    }]
+  },
+  options: {
+    cutout: '70%',
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

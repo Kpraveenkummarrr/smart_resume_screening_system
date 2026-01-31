@@ -1,60 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <style>
-    .subtitle {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 15px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  background: #f5f6fa;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.progress-container {
-  width: 100%;
-  background: #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 15px;
-}
-
-.progress-bar {
-  height: 12px;
-  background: linear-gradient(to right,#667eea,#764ba2);
-}
-
-.status {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.success {
-  background: #e6fffa;
-  color: #065f46;
-}
-
-.reject {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-  </style>
 <head>
-
-  <title>Screening Result</title>
+  <title>Resume Screening Result</title>
   <link rel="stylesheet" href="/static/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .subtitle { font-size:14px; color:#666; margin-bottom:15px; }
+
+    .info-row {
+      display:flex; justify-content:space-between;
+      background:#f5f6fa; padding:10px;
+      border-radius:8px; margin-top:10px;
+      font-size:14px;
+    }
+
+    .progress-container {
+      width:100%; background:#ddd;
+      border-radius:10px; overflow:hidden;
+      margin-top:15px;
+    }
+
+    .progress-bar {
+      height:12px;
+      background:linear-gradient(to right,#667eea,#764ba2);
+    }
+
+    .status {
+      margin-top:15px; padding:10px;
+      border-radius:8px; font-weight:bold;
+      text-align:center;
+    }
+
+    .success { background:#e6fffa; color:#065f46; }
+    .reject { background:#fee2e2; color:#991b1b; }
+
+    .resume-box {
+      margin-top:25px;
+      padding:15px;
+      background:#f9fafb;
+      border-radius:10px;
+    }
+  </style>
 </head>
+
 <body>
 
 <div class="card">
@@ -62,7 +51,6 @@
   <h2>📊 Resume Screening Result</h2>
   <p class="subtitle">AI-based analysis summary</p>
 
-  <!-- RESULT INFO -->
   <div class="info-row">
     <span>Predicted Role</span>
     <strong>{{ role }}</strong>
@@ -73,20 +61,36 @@
     <strong>{{ score }}%</strong>
   </div>
 
-  <!-- PROGRESS BAR -->
   <div class="progress-container">
     <div class="progress-bar" style="width: {{ score }}%"></div>
   </div>
 
-  <!-- STATUS -->
   {% if score|int >= 70 %}
     <div class="status success">✅ Shortlisted</div>
   {% else %}
     <div class="status reject">❌ Not Shortlisted</div>
   {% endif %}
 
-  <!-- CHART -->
   <canvas id="scoreChart" style="margin-top:20px;"></canvas>
+
+  <!-- 🔥 ACTUAL RESUME FILE PREVIEW -->
+  <div class="resume-box">
+    <h3>📄 Uploaded Resume</h3>
+
+    {% if filename.endswith('.pdf') %}
+      <iframe
+        src="/uploads/{{ filename }}"
+        width="100%"
+        height="400px"
+        style="border:1px solid #ddd; border-radius:8px;">
+      </iframe>
+    {% else %}
+      <p>Preview not supported for this file type.</p>
+      <a href="/uploads/{{ filename }}" target="_blank">
+        <button>⬇️ Download Resume</button>
+      </a>
+    {% endif %}
+  </div>
 
   <a href="/upload">
     <button style="margin-top:20px;">🔄 Analyze Another Resume</button>
@@ -103,16 +107,12 @@ new Chart(ctx, {
   data: {
     labels: ['Matched', 'Unmatched'],
     datasets: [{
-      data: [score, 100 - score],
+      data: [score, 100-score],
     }]
   },
   options: {
     cutout: '70%',
-    plugins: {
-      legend: {
-        position: 'bottom'
-      }
-    }
+    plugins: { legend: { position: 'bottom' } }
   }
 });
 </script>

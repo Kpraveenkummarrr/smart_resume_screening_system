@@ -1,20 +1,20 @@
 import pandas as pd
 import pickle
-from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
-data = pd.read_csv("../dataset/resume_data.csv")
+df = pd.read_csv("../dataset/resume_data.csv")
 
-X = data["Resume_Text"]
-y = data["Category"]
+X = df["Resume_Text"]
+y = df["Category"]
 
-pipeline = Pipeline([
-    ("tfidf", TfidfVectorizer(max_features=5000, stop_words="english")),
-    ("clf", MultinomialNB())
-])
+vectorizer = TfidfVectorizer(stop_words="english", max_features=3000)
+X_vec = vectorizer.fit_transform(X)
 
-pipeline.fit(X, y)
+model = MultinomialNB()
+model.fit(X_vec, y)
 
-pickle.dump(pipeline, open("resume_model.pkl", "wb"))
-print("✅ ML Pipeline Model Saved")
+pickle.dump(model, open("resume_model.pkl", "wb"))
+pickle.dump(vectorizer, open("tfidf.pkl", "wb"))
+
+print("✅ Model trained successfully")

@@ -1,7 +1,35 @@
-<link rel="stylesheet" href="/static/style.css">
-<form method="post" class="card">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recruiter Login</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="card login-card">
   <h2>Recruiter Login</h2>
-  <input name="username" placeholder="Username">
-  <input name="password" type="password" placeholder="Password">
-  <button>Login</button>
-</form>
+  <p class="subtitle">Access Smart Resume Screening System</p>
+
+  <form method="post">
+    
+    <div class="input-group">
+      <label>Username</label>
+      <input name="username" placeholder="Enter username" required>
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input name="password" type="password" placeholder="Enter password" required>
+    </div>
+
+    <button type="submit"> Login</button>
+  </form>
+
+  <p class="footer-text">
+    Authorized access only
+  </p>
+</div>
+
+</body>
+</html>
+
